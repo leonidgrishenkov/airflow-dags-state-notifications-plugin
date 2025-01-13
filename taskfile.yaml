@@ -5,10 +5,16 @@ vars:
   USER: yc-user
   SSH_KEY_PATH: ~/.ssh/dev-hosts
   PROJECT_PATH: ~/Code/airflow-dags-state-notifications-plugin
-  SERVER_ADDR: leonidgrishenkov.com
+  SERVER_ADDR: 89.169.159.221
 
 tasks:
   sync:
     desc: Sync files with the server.
     cmds:
-      - rsync -az -e "ssh -i {{ .SSH_KEY_PATH }}" --progress --delete --checksum --exclude='airflow/logs' {{ .PROJECT_PATH }} {{ .USER }}@{{ .SERVER_ADDR }}:/home/{{ .USER }}/
+      - |
+        rsync -az \
+          -e "ssh -i {{ .SSH_KEY_PATH }} -p 51222" \
+          --progress --delete --checksum \
+          --exclude='airflow/logs' \
+          {{ .PROJECT_PATH }} \
+          {{ .USER }}@{{ .SERVER_ADDR }}:/home/{{ .USER }}/
